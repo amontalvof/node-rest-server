@@ -6,25 +6,28 @@ const getUsers = (req, res = response) => {
     });
 };
 
-const postUsers = (req, res) => {
+const postUsers = (req, res = response) => {
+    const { name, age } = req.body;
     res.status(201).json({
         msg: 'post API - controller',
+        name,
+        age,
     });
 };
 
-const putUsers = (req, res) => {
+const putUsers = (req, res = response) => {
     res.status(400).json({
         msg: 'put API - controller',
     });
 };
 
-const patchUsers = (req, res) => {
+const patchUsers = (req, res = response) => {
     res.json({
         msg: 'patch API - controller',
     });
 };
 
-const deleteUsers = (req, res) => {
+const deleteUsers = (req, res = response) => {
     res.json({
         msg: 'delete API - controller',
     });
