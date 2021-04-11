@@ -1,8 +1,14 @@
 const { response } = require('express');
 
 const getUsers = (req, res = response) => {
+    const { q, name = 'no name', apikey, page = 1, limit } = req.query;
     res.json({
         msg: 'get API - controller',
+        q,
+        name,
+        apikey,
+        page,
+        limit,
     });
 };
 
@@ -16,8 +22,10 @@ const postUsers = (req, res = response) => {
 };
 
 const putUsers = (req, res = response) => {
+    const id = req.params.id;
     res.status(400).json({
         msg: 'put API - controller',
+        id,
     });
 };
 
