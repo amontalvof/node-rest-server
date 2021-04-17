@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validateFields');
-const Role = require('../models/role');
+const { isValidRole } = require('../helpers/dbValidators');
 const {
     getUsers,
     postUsers,
@@ -24,12 +24,7 @@ router.post(
     ],
     [check('email', 'The email is not valid').isEmail()],
     // [check('role', 'It is not a valid role').isIn(['ADMIN_ROLE', 'USER_ROLE'])],
-    check('role').custom(async (role = '') => {
-        const existsRole = await Role.findOne({ role });
-        if (!existsRole) {
-            throw new Error(`The ${role} is not registered in the database`);
-        }
-    }),
+    check('role').custom(isValidRole),
     validateFields,
     postUsers
 );
