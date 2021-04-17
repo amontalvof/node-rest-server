@@ -32,7 +32,7 @@ const postUsers = async (req, res = response) => {
 
 const putUsers = async (req, res = response) => {
     const id = req.params.id;
-    const { password, google, email, ...rest } = req.body;
+    const { _id, password, google, email, ...rest } = req.body;
 
     // TODO: validar contra base de datos
 
@@ -45,7 +45,6 @@ const putUsers = async (req, res = response) => {
     const user = await User.findByIdAndUpdate(id, rest);
 
     res.status(200).json({
-        msg: 'put API - controller',
         user,
     });
 };
