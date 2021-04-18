@@ -34,10 +34,8 @@ const postUsers = async (req, res = response) => {
 };
 
 const putUsers = async (req, res = response) => {
-    const id = req.params.id;
+    const { id } = req.params;
     const { _id, password, google, email, ...rest } = req.body;
-
-    // TODO: validar contra base de datos
 
     if (password) {
         // encrypt password
@@ -50,15 +48,16 @@ const putUsers = async (req, res = response) => {
     res.status(200).json({ user });
 };
 
-const patchUsers = (req, res = response) => {
-    res.json({
-        msg: 'patch API - controller',
-    });
-};
+const deleteUsers = async (req, res = response) => {
+    const { id } = req.params;
 
-const deleteUsers = (req, res = response) => {
+    // delete from database
+    // const user = await User.findByIdAndDelete(id);
+
+    const user = await User.findByIdAndUpdate(id, { status: false });
+
     res.json({
-        msg: 'delete API - controller',
+        user,
     });
 };
 
@@ -66,6 +65,5 @@ module.exports = {
     getUsers,
     postUsers,
     putUsers,
-    patchUsers,
     deleteUsers,
 };

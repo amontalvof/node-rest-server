@@ -10,7 +10,6 @@ const {
     getUsers,
     postUsers,
     putUsers,
-    patchUsers,
     deleteUsers,
 } = require('../controllers/users');
 
@@ -45,7 +44,15 @@ router.put(
     ],
     putUsers
 );
-router.patch('/', patchUsers);
-router.delete('/', deleteUsers);
+
+router.delete(
+    '/:id',
+    [
+        check('id', 'It is not a valid id').isMongoId(),
+        check('id').custom(existUserById),
+        validateFields,
+    ],
+    deleteUsers
+);
 
 module.exports = router;
