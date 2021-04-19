@@ -50,7 +50,6 @@ const putUsers = async (req, res = response) => {
 
 const deleteUsers = async (req, res = response) => {
     const { id } = req.params;
-    const uid = req.uid;
 
     // delete from database
     // const user = await User.findByIdAndDelete(id);
@@ -59,7 +58,6 @@ const deleteUsers = async (req, res = response) => {
 
     res.json({
         user,
-        uid,
     });
 };
 
