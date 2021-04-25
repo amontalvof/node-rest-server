@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const colors = require('colors/safe');
-const { dbConnection } = require('../database/config');
+const { dbConnection } = require('./database/config');
 class Server {
     constructor() {
         this.app = express();
@@ -39,9 +39,9 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.auth, require('../routes/auth'));
-        this.app.use(this.paths.categories, require('../routes/categories'));
-        this.app.use(this.paths.users, require('../routes/users'));
+        this.app.use(this.paths.auth, require('./routes/auth'));
+        this.app.use(this.paths.categories, require('./routes/categories'));
+        this.app.use(this.paths.users, require('./routes/users'));
     }
 
     listen() {
