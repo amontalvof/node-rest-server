@@ -1,70 +1,74 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { existCategoryById } = require('../helpers/dbValidators');
+const {
+    existProductById,
+    existCategoryById,
+} = require('../helpers/dbValidators');
 const { validateFields, validateJWT, isAdminRole } = require('../middlewares');
 const {
-    createCategory,
-    getCategories,
-    getCategory,
-    updateCategory,
-    deleteCategory,
-} = require('../controllers/categories');
+    createProduct,
+    getProducts,
+    getProduct,
+    updateProduct,
+    deleteProduct,
+} = require('../controllers/products');
 
 const router = Router();
 
 /**
- ** /api/categories
+ ** /api/products
  */
 
-// get all categories
-router.get('/', getCategories);
+// get all products
+router.get('/', getProducts);
 
-// get a category by id
+// get a product by id
 router.get(
     '/:id',
     [
         check('id', 'It is not a valid id').isMongoId(),
-        check('id').custom(existCategoryById),
+        check('id').custom(existProductById),
         validateFields,
     ],
-    getCategory
+    getProduct
 );
 
-// create a category, anyone with a valid token
+// create a product, anyone with a valid token
 router.post(
     '/',
     [
         validateJWT,
         check('name', 'The name is required').not().isEmpty(),
+        check('category', 'Category is not a valid id').isMongoId(),
+        check('category').custom(existCategoryById),
         validateFields,
     ],
-    createCategory
+    createProduct
 );
 
-// update a category, anyone with a valid token
+// update a product, anyone with a valid token
 router.put(
     '/:id',
     [
         validateJWT,
-        check('name', 'The name is required').not().isEmpty(),
         check('id', 'It is not a valid id').isMongoId(),
-        check('id').custom(existCategoryById),
+        check('id').custom(existProductById),
         validateFields,
     ],
-    updateCategory
+    updateProduct
 );
 
-// delete a category, only a user with role admin
+// delete a product, only a user with role admin
 router.delete(
     '/:id',
     [
         validateJWT,
         isAdminRole,
         check('id', 'It is not a valid id').isMongoId(),
-        check('id').custom(existCategoryById),
+        check('id').custom(existProductById),
         validateFields,
     ],
-    deleteCategory
+    deleteProduct
 );
 
 module.exports = router;
