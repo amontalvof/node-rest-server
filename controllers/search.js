@@ -12,6 +12,21 @@ const searchUser = async (term = '', res = response) => {
             results: user ? [user] : [],
         });
     }
+
+    const regex = new RegExp(term, 'i');
+
+    const [users, total] = await Promise.all([
+        User.find({
+            $or: [{ name: regex }, { email: regex }],
+            $and: [{ status: true }],
+        }),
+        User.countDocuments({
+            $or: [{ name: regex }, { email: regex }],
+            $and: [{ status: true }],
+        }),
+    ]);
+
+    res.json({ total, results: users });
 };
 
 const search = (req, res = response) => {
