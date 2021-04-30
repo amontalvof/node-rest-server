@@ -12,16 +12,28 @@ const uploadFile = (req, res = response) => {
     }
 
     const { sampleFile } = req.files;
+    const splittedName = sampleFile.name.split('.');
+    const extension = splittedName[splittedName.length - 1];
 
-    const uploadPath = path.join(__dirname, '../uploads/', sampleFile.name);
+    // validate extensions
+    const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+    if (!validExtensions.includes(extension)) {
+        res.status(400).json({
+            msg: `The ${extension} extension is not allowed, only the following extensions are accepted ${validExtensions}`,
+        });
+    }
 
-    sampleFile.mv(uploadPath, (err) => {
-        if (err) {
-            return res.status(500).json({ err });
-        }
+    res.status(200).json({ extension });
 
-        res.json({ msg: 'File uploaded to ' + uploadPath });
-    });
+    // const uploadPath = path.join(__dirname, '../uploads/', sampleFile.name);
+
+    // sampleFile.mv(uploadPath, (err) => {
+    //     if (err) {
+    //         return res.status(500).json({ err });
+    //     }
+
+    //     res.json({ msg: 'File uploaded to ' + uploadPath });
+    // });
 };
 
 module.exports = { uploadFile };
