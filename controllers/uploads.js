@@ -1,7 +1,7 @@
 const { response } = require('express');
 const { uploadFile } = require('../helpers/uploadFile');
 
-const upload = async (req, res = response) => {
+const uploadImage = async (req, res = response) => {
     if (
         !req.files ||
         Object.keys(req.files).length === 0 ||
@@ -19,4 +19,9 @@ const upload = async (req, res = response) => {
     }
 };
 
-module.exports = { upload };
+const updateImage = (req, res = response) => {
+    const { id, collection } = req.params;
+    res.json({ id, collection });
+};
+
+module.exports = { uploadImage, updateImage };
