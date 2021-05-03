@@ -13,7 +13,7 @@ router.put(
     [
         check('id', 'It is not a valid id').isMongoId(),
         check('collection').custom((collection) =>
-            allowedCollections(collection, ['users', 'product'])
+            allowedCollections(collection, ['users', 'products'])
         ),
         validateFields,
     ],
