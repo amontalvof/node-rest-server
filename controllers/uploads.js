@@ -1,16 +1,10 @@
+const path = require('path');
+const fs = require('fs');
 const { response } = require('express');
 const { uploadFile } = require('../helpers/uploadFile');
 const { User, Product } = require('../models');
 
 const uploadImage = async (req, res = response) => {
-    if (
-        !req.files ||
-        Object.keys(req.files).length === 0 ||
-        !req.files.sampleFile
-    ) {
-        res.status(400).json({ msg: 'No files were uploaded.' });
-        return;
-    }
     try {
         // const fileName = await uploadFile(req.files, ['txt', 'md'], 'textos');
         const fileName = await uploadFile(req.files, undefined, 'images');
@@ -42,6 +36,19 @@ const updateImage = async (req, res = response) => {
             break;
         default:
             return res.status(500).json({ msg: 'I forgot to validate this' });
+    }
+    // remove previous images
+    if (model.img) {
+        // delete image from server
+        const imagePath = path.join(
+            __dirname,
+            '../uploads',
+            collection,
+            model.img
+        );
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
     }
 
     const fileName = await uploadFile(req.files, undefined, collection);
