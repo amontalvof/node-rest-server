@@ -57,4 +57,43 @@ const updateImage = async (req, res = response) => {
     res.json(model);
 };
 
-module.exports = { uploadImage, updateImage };
+const showImage = async (req, res = response) => {
+    const { id, collection } = req.params;
+    let model;
+    switch (collection) {
+        case 'users':
+            model = await User.findById(id);
+            if (!model) {
+                return res.status(400).json({
+                    msg: `There is no user with the id ${id} in the database`,
+                });
+            }
+            break;
+        case 'products':
+            model = await Product.findById(id);
+            if (!model) {
+                return res.status(400).json({
+                    msg: `There is no product with the id ${id} in the database`,
+                });
+            }
+            break;
+        default:
+            return res.status(500).json({ msg: 'I forgot to validate this' });
+    }
+
+    if (model.img) {
+        const imagePath = path.join(
+            __dirname,
+            '../uploads',
+            collection,
+            model.img
+        );
+        if (fs.existsSync(imagePath)) {
+            return res.sendFile(imagePath);
+        }
+    }
+
+    res.json({ msg: 'Missing placeholder' });
+};
+
+module.exports = { uploadImage, updateImage, showImage };
