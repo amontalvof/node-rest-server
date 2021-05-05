@@ -4,8 +4,9 @@ const { validateFields, validateFile } = require('../middlewares');
 const { allowedCollections } = require('../helpers/dbValidators');
 const {
     uploadImage,
-    updateImage,
+    // updateImage,
     showImage,
+    updateImageCloudinary
 } = require('../controllers/uploads');
 
 const router = Router();
@@ -22,7 +23,7 @@ router.put(
         ),
         validateFields,
     ],
-    updateImage
+    updateImageCloudinary
 );
 
 router.get(
